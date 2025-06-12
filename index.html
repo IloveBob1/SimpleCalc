@@ -41,7 +41,8 @@
         <div class="display"></div>
         <table>
             <tr>
-                <td colspan="3" id="clear">A/C</td>
+                <td id="clear">A/C</td>
+                <td class="button" colspan="2">fact()</td>
                 <td class="button">/</td>
             </tr>
             <tr>
@@ -75,6 +76,11 @@
         let clear = document.getElementById("clear")
         let equal = document.getElementById("equal");
         let display = document.getElementsByClassName("display")[0];
+
+        function fact(x) {
+            if (x == 1) return 1;
+            return x * fact(x-1);
+        }
         
         buttons.forEach((button) => {
             button.addEventListener('click', () => {
