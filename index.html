@@ -34,34 +34,59 @@
             padding: 25px;
             font-size: 20px;
         }
+        td::after {
+            content: attr(data-second-func);
+            color: #333;
+            position: relative;
+            bottom: 20px;
+            left: 3px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        #is_second_function {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            color: #333;
+            font-weight: bold;
+        }
+        #is_second_function.yes {
+            color: #bbb;
+        }
+
+        #second_func {
+            color: #333;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div id="is_second_function">2dnf</div>
         <div class="display"></div>
         <table>
             <tr>
+                <td id="second_func" colspan="2">2ndf</td>
                 <td id="clear">A/C</td>
-                <td class="button" colspan="2">fact(</td>
-                <td class="button">/</td>
+                <td class="button" data-second-func="fact(">/</td>
             </tr>
             <tr>
                 <td class="button">7</td>
                 <td class="button">8</td>
                 <td class="button">9</td>
-                <td class="button">*</td>
+                <td class="button" data-second-func="sin(">*</td>
             </tr>
             <tr>
                 <td class="button">4</td>
                 <td class="button">5</td>
                 <td class="button">6</td>
-                <td class="button">-</td>
+                <td class="button" data-second-func="cos(">-</td>
             </tr>
             <tr>
                 <td class="button">1</td>
                 <td class="button">2</td>
                 <td class="button">3</td>
-                <td class="button">+</td>
+                <td class="button" data-second-func="tan(">+</td>
             </tr>
             <tr>
                 <td class="button">0</td>
@@ -76,28 +101,56 @@
         let clear = document.getElementById("clear")
         let equal = document.getElementById("equal");
         let display = document.getElementsByClassName("display")[0];
+        let second_func = document.getElementById("second_func")
+        let second_func_display = document.getElementById("is_second_function")
+        let use2ndf = false;
 
         function fact(x) {
             if (x == 1) return 1;
             return x * fact(x-1);
         }
+
+        function cos(x) {
+            return Math.cos(x);
+        }
+
+        function sin(x) {
+            return Math.sin(x);
+        }
+
+        function tan(x) {
+            return Math.tan(x);
+        }
         
         buttons.forEach((button) => {
             button.addEventListener('click', () => {
-                display.textContent += button.textContent
+                display.textContent += (use2ndf && button.dataset.secondFunc) ?
+                            button.dataset.secondFunc :
+                            button.textContent
+                use2ndf = false
+                second_func_display.classList.remove('yes')
             })
+        })
+
+        second_func.addEventListener('click', () => {
+            use2ndf = true;
+            second_func_display.classList.add('yes')
         })
 
         clear.addEventListener('click', () => {
             display.textContent = "";
+            use2ndf = false
+            second_func_display.classList.remove('yes')
         })
 
         equal.addEventListener('click', () => {
             try {
                 display.textContent = eval(display.textContent);
             } catch {
-                display.textContent = "Error"
+                display.textContent = "Error!"
             }
+            use2ndf = false
+            second_func_display.classList.remove('yes')
         })
     </script>
 </body>
