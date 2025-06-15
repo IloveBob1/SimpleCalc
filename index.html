@@ -8,12 +8,14 @@
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
+
         .container {
             background-color: #aaa;
             width: fit-content;
             padding: 30px;
             border-radius: 10px;
         }
+
         .display {
             background-color: #333;
             padding: 10px;
@@ -24,25 +26,42 @@
             line-height: 50px;
             font-size: 30px;
         }
+
         table {
             width: 100%;
             height: 100%;
             border-spacing: 5px;
         }
+
         td {
             background-color: #777;
             padding: 25px;
             font-size: 20px;
         }
-        td::after {
-            content: attr(data-second-func);
-            color: #333;
+
+        td[data-second-func] {
+            padding: 10px;
+        }
+
+        td::before {
+            content: attr(data-alt);
+            color: #4eb2c2;
+            font-size: 13px;
+            font-weight: bold;
             position: relative;
             bottom: 20px;
-            left: 3px;
-            font-size: 15px;
+        }
+
+        td::after {
+            content: attr(data-second-func);
+            color: #ff8521;
+            position: relative;
+            bottom: 20px;
+            left: 5px;
+            font-size: 13px;
             font-weight: bold;
         }
+
         #is_second_function {
             position: absolute;
             top: 40px;
@@ -50,12 +69,30 @@
             color: #333;
             font-weight: bold;
         }
+        
         #is_second_function.yes {
-            color: #bbb;
+            color: #ff8521;
         }
 
         #second_func {
+            color: #ff8521;
+            font-weight: bold;
+        }
+
+        #is_alt {
+            position: absolute;
+            top: 40px;
+            left: 85px;
+            font-weight: bold;
             color: #333;
+        }
+
+        #is_alt.yes {
+            color: #4eb2c2;
+        }
+
+        #alt {
+            color: #4eb2c2;
             font-weight: bold;
         }
     </style>
@@ -63,35 +100,37 @@
 <body>
     <div class="container">
         <div id="is_second_function">2ndf</div>
+        <div id="is_alt">alt</div>
         <div class="display"></div>
         <table>
             <tr>
-                <td id="second_func" colspan="2">2ndf</td>
+                <td id="second_func">2ndf</td>
+                <td id="alt">alt</td>
                 <td id="clear">A/C</td>
-                <td class="button" data-second-func="fact(">/</td>
+                <td class="button" data-alt="fact2(" data-second-func="fact(">/</td>
             </tr>
             <tr>
-                <td class="button" data-second-func="asin(">7</td>
+                <td class="button">7</td>
                 <td class="button">8</td>
                 <td class="button">9</td>
-                <td class="button" data-second-func="sin(">*</td>
+                <td class="button" data-alt="asin(" data-second-func="sin(">*</td>
             </tr>
             <tr>
-                <td class="button" data-second-func="acos(">4</td>
+                <td class="button">4</td>
                 <td class="button">5</td>
                 <td class="button">6</td>
-                <td class="button" data-second-func="cos(">-</td>
+                <td class="button" data-alt="acos(" data-second-func="cos(">-</td>
             </tr>
             <tr>
-                <td class="button" data-second-func="atan(">1</td>
+                <td class="button">1</td>
                 <td class="button">2</td>
                 <td class="button">3</td>
-                <td class="button" data-second-func="tan(">+</td>
+                <td class="button" data-alt="atan(" data-second-func="tan(">+</td>
             </tr>
             <tr>
                 <td class="button">0</td>
                 <td class="button">(</td>
-                <td class="button">)</td>
+                <td class="button" data-alt="pfact(" data-second-func="prime(">)</td>
                 <td id="equal">=</td>
             </tr>
         </table>
@@ -104,10 +143,33 @@
         let second_func = document.getElementById("second_func")
         let second_func_display = document.getElementById("is_second_function")
         let use2ndf = false;
+        let alt = document.getElementById("alt")
+        let alt_display = document.getElementById("is_alt")
+        let useAlt = false;
 
         function fact(x) {
             if (x == 1) return 1;
             return x * fact(x-1);
+        }
+
+        function fact2(x) {
+            if (x <= 2) return x;
+            return x * fact2(x-2);
+        }
+
+        function prime(x) {
+            for (let i = 2; i < x; i++) {
+                if (x % i == 0) return 0;
+            }
+            return 1;
+        }
+
+        function pfact(x) {
+            output = 1;
+            for (let i = 1; i <= x; i++) {
+                if (prime(i)) output *= i;
+            }
+            return output;
         }
 
         function cos(x) {
@@ -137,16 +199,27 @@
         buttons.forEach((button) => {
             button.addEventListener('click', () => {
                 display.textContent += (use2ndf && button.dataset.secondFunc) ?
-                            button.dataset.secondFunc :
+                            button.dataset.secondFunc : useAlt ? button.dataset.alt :
                             button.textContent
                 use2ndf = false
                 second_func_display.classList.remove('yes')
+                useAlt = false
+                alt_display.classList.remove('yes')
             })
         })
 
         second_func.addEventListener('click', () => {
             use2ndf = true;
             second_func_display.classList.add('yes')
+            useAlt = false
+            alt_display.classList.remove('yes')
+        })
+
+        alt.addEventListener('click', () => {
+            useAlt = true
+            alt_display.classList.add('yes')
+            use2ndf = false
+            second_func_display.classList.remove('yes')
         })
 
         clear.addEventListener('click', () => {
@@ -163,6 +236,8 @@
             }
             use2ndf = false
             second_func_display.classList.remove('yes')
+            useAlt = false
+            alt_display.classList.remove('yes')
         })
     </script>
 </body>
