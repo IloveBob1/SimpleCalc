@@ -71,19 +71,19 @@
                 <td class="button" data-second-func="fact(">/</td>
             </tr>
             <tr>
-                <td class="button">7</td>
+                <td class="button" data-second-func="asin(">7</td>
                 <td class="button">8</td>
                 <td class="button">9</td>
                 <td class="button" data-second-func="sin(">*</td>
             </tr>
             <tr>
-                <td class="button">4</td>
+                <td class="button" data-second-func="acos(">4</td>
                 <td class="button">5</td>
                 <td class="button">6</td>
                 <td class="button" data-second-func="cos(">-</td>
             </tr>
             <tr>
-                <td class="button">1</td>
+                <td class="button" data-second-func="atan(">1</td>
                 <td class="button">2</td>
                 <td class="button">3</td>
                 <td class="button" data-second-func="tan(">+</td>
@@ -120,6 +120,18 @@
 
         function tan(x) {
             return Math.tan(x);
+        }
+
+        function asin(x) {
+            return Math.asin(x);
+        }
+
+        function acos(x) {
+            return Math.acos(x);
+        }
+
+        function atan(x) {
+            return Math.atan(x);
         }
         
         buttons.forEach((button) => {
