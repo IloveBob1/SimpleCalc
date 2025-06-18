@@ -110,9 +110,9 @@
                 <td class="button" data-alt="fact2(" data-second-func="fact(">/</td>
             </tr>
             <tr>
-                <td class="button">7</td>
-                <td class="button">8</td>
-                <td class="button">9</td>
+                <td class="button" data-second-func="sec(">7</td>
+                <td class="button" data-second-func="csc(">8</td>
+                <td class="button data-second-func="cot(">9</td>
                 <td class="button" data-alt="asin(" data-second-func="sin(">*</td>
             </tr>
             <tr>
@@ -194,6 +194,18 @@
 
         function atan(x) {
             return Math.atan(x);
+        }
+
+        function sec(x) {
+            return Math.sec(x);
+        }
+
+        function csc(x) {
+            return Math.csc(x);
+        }
+
+        function cot(x) {
+            return Math.cot(x);
         }
         
         buttons.forEach((button) => {
